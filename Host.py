@@ -9,6 +9,8 @@ if __name__ == '__main__':
     for i in range(5):
         Rz_phi = Kitaev.TestRZ.simulate()
         print(i," TestRZ : ",Rz_phi)
+        Rz_phi_bitwise = Kitaev.TestRZ_bitwise.simulate()
+        print(i," TestRZ_bitwise : ",Rz_phi_bitwise)
 
     for i in range(5):
         S_Phi = Kitaev.TestS0.simulate()
