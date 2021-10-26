@@ -1,3 +1,7 @@
+#Author: Nicholas Bohlsen
+#Date: 26/10/21
+#This is just a debugging program which checks to make sure the Kitaev library imports and compiles correctly
+#it also runs a series of short tests which were intended for developer debugging 
 import qsharp
 import Kitaev
 import numpy as np
