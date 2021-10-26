@@ -1,14 +1,22 @@
 namespace Kitaev {
+        //Title: Kitaev
+	//Author: Nicholas Bohlsen
+	//Version: 6.0
+	//Date: 26/10/21
+	//Description: This source code file includes a Q# implementation of the Kitaev phase estimation procedure. For
+	//	       details refer to the paper which is included in the same GitHub repository as this program. 
+	
     open Microsoft.Quantum.Convert;
     open Microsoft.Quantum.Math;
     open Microsoft.Quantum.Measurement;
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Intrinsic;
-    //Generalising the Kitaev algorithm to accept arbitrary inputs
+    
+
     operation phaseKickbackSubroutine_Odd (U : (Qubit[] => Unit is Adj+Ctl),
-                                       register : Qubit[],
-                                       anc : Qubit,
-                                       Mul : Int) : Unit is Adj + Ctl {
+                                       	   register : Qubit[],
+                                           anc : Qubit,
+                                           Mul : Int) : Unit is Adj + Ctl {
         //Performs the phase kickback routine which forms the basis of the Kitaev algorithm.
         //This circuit can observe the sign of the angle
         //Note Mul is an integer describing the multiple of the eigenphase which is to be acquired
@@ -25,9 +33,9 @@ namespace Kitaev {
         H(anc);
     }
     operation phaseKickbackSubroutine_Even (U : (Qubit[] => Unit is Adj+Ctl),
-                                       register : Qubit[],
-                                       anc : Qubit,
-                                       Mul : Int) : Unit is Adj + Ctl {
+                                            register : Qubit[],
+                                            anc : Qubit,
+                                            Mul : Int) : Unit is Adj + Ctl {
         //Performs the phase kickback routine which forms the basis of the Kitaev algorithm.
         //This circuit can measure over the full range from 0 to \pi
         //Note M is an integer describing the multiple of the eigenphase which is to be acquired
@@ -184,12 +192,21 @@ namespace Kitaev {
         let angle = 2.0*PI()*phi;
         Rz(2.0*angle,register[0]);
     }
-    operation TestRZ() : Int[] {
+    operation TestRZ_bitwise() : Int[] {
         //Tests the Kitaev Process for the case of a pure z rotation
         use eigenstate = Qubit();
         X(eigenstate);//sets to the |1> eigenket
         
         let phi = estimatePhaseKitaev_Bestmp2Bit(TestRZ_Passable,[eigenstate],1000,8);//Runs 10000 iterations
+        ResetAll([eigenstate]);
+        return phi;
+    }
+    operation TestRZ() : Double {
+        //Tests the Kitaev Process for the case of a pure z rotation
+        use eigenstate = Qubit();
+        X(eigenstate);//sets to the |1> eigenket
+        
+        let phi = estimatePhaseKitaev(TestRZ_Passable,[eigenstate],10000);//Runs 10000 iterations
         ResetAll([eigenstate]);
         return phi;
     }
@@ -238,6 +255,11 @@ namespace Kitaev {
     
     operation TestScaling_RZ() : Double[] {
         //Tests the Kitaev Process for the case of a pure z rotation
+	//WARNING!!!!!!!
+		//This is a stress test program and is VERY VERY long. 
+		//It can take upwards of 3.5 hours to complete and 
+		//was only included for completeness as it is a piece of experimental code used by the developer.
+
         use eigenstate = Qubit();
         X(eigenstate);//sets to the |1> eigenket
         
@@ -259,6 +281,11 @@ namespace Kitaev {
     
     operation TestScaling_H() : Double[] {
         //Tests the Kitaev Process for the case of a pure H gate
+	//WARNING!!!!!!!
+		//This is a stress test program and is VERY VERY long. 
+		//It can take upwards of 3.5 hours to complete and 
+		//was only included for completeness as it is a piece of experimental code used by the developer.
+
         use eigenstate = Qubit();
         let theta = 2.0*ArcCos((1.0+Sqrt(2.0))/Sqrt(4.0+2.0*Sqrt(2.0)));
         Ry(theta,eigenstate);
